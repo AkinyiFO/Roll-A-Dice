@@ -1,10 +1,9 @@
 package com.simpleapps22.rolladice
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.simpleapps22.rolladice.databinding.ActivityMainBinding
 
 /**
  * Roll A Dice demonstrates simple interactivity in an Android app.
@@ -12,40 +11,36 @@ import android.widget.TextView
  * value between 1 and 6.
  */
 class MainActivity : AppCompatActivity() {
-
-    lateinit var diceImage: ImageView
-    lateinit var diceImage1: ImageView
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        diceImage = findViewById(R.id.dice_image)
-        diceImage1 = findViewById(R.id.dice_image1)
+        binding.apply { // Assign a click listener to a button.
+            rollButton.setOnClickListener { rollDice() }
 
-        // Get the Button view from the layout and assign a click
-        // listener to it.
-        val rollButton: Button = findViewById(R.id.roll_button)
-        rollButton.setOnClickListener { rollDice() }
-
-        val clearButton: Button = findViewById(R.id.clear_button)
-        clearButton.setOnClickListener { resetImage() }
+            clearButton.setOnClickListener { resetImage() }
+        }
     }
 
     /**
      * Click listener for the Roll button.
      */
     private fun rollDice() {
-        diceImage.setImageResource(getRandomDiceImage())
-        diceImage1.setImageResource(getRandomDiceImage())
+        binding.apply {
+            diceImage.setImageResource(getRandomDiceImage())
+            diceImage1.setImageResource(getRandomDiceImage())
+        }
     }
 
     /**
      * Click listener for the Clear button.
      */
     private fun resetImage() {
-        diceImage.setImageResource(R.drawable.dice_1)
-        diceImage1.setImageResource(R.drawable.dice_1)
+        binding.apply {
+            diceImage.setImageResource(R.drawable.dice_1)
+            diceImage1.setImageResource(R.drawable.dice_1)}
     }
 
     private fun getRandomDiceImage(): Int {
